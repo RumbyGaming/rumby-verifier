@@ -1,0 +1,844 @@
+{
+  "instructions": [
+    {
+      "name": "ix1",
+      "discriminator": [
+        222,
+        62,
+        67,
+        220,
+        63,
+        166,
+        126,
+        33
+      ],
+      "accounts": [],
+      "args": [
+        {
+          "name": "player",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "choice",
+          "type": "u64"
+        },
+        {
+          "name": "bet_type",
+          "type": "u8"
+        }
+      ]
+    },
+
+    {
+      "name": "ix2",
+      "discriminator": [
+        148,
+        204,
+        152,
+        70,
+        240,
+        83,
+        69,
+        152
+      ],
+      "accounts": [],
+      "args": [
+        {
+          "name": "player",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "client_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "poker_action",
+          "type": "u8"
+        },
+        {
+          "name": "card_index",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "ix3",
+      "discriminator": [
+        68,
+        88,
+        210,
+        189,
+        153,
+        6,
+        20,
+        184
+      ],
+      "accounts": [],
+      "args": [
+        {
+          "name": "winners",
+          "type": {
+            "vec": {
+              "defined": {
+                "name": "Winner"
+              }
+            }
+          }
+        },
+        {
+          "name": "winners_count",
+          "type": "u16"
+        },
+        {
+          "name": "server_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "public_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "disburse_winnings",
+          "type": "bool"
+        },
+        {
+          "name": "close_match",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "ix4",
+      "discriminator": [
+        159,
+        108,
+        4,
+        223,
+        196,
+        102,
+        31,
+        135
+      ],
+      "accounts": [],
+      "args": [
+        {
+          "name": "round",
+          "type": "u64"
+        },
+        {
+          "name": "game_mode",
+          "type": "u8"
+        },
+        {
+          "name": "hashed_server_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ix5",
+      "discriminator": [
+        206,
+        249,
+        165,
+        211,
+        231,
+        58,
+        252,
+        100
+      ],
+      "accounts": [],
+      "args": [
+        {
+          "name": "match_data",
+          "type": {
+            "defined": {
+              "name": "Match"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [],
+  "events": [],
+  "errors": [],
+  "types": [
+    {
+      "name": "Bet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "game",
+            "type": "u16"
+          },
+          {
+            "name": "round",
+            "type": "u64"
+          },
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "bet_range_start",
+            "type": "u64"
+          },
+          {
+            "name": "bet_type",
+            "type": {
+              "defined": {
+                "name": "BetType"
+              }
+            }
+          },
+          {
+            "name": "after_commit",
+            "type": "bool"
+          },
+          {
+            "name": "record_index",
+            "type": "u8"
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          },
+          {
+            "name": "is_delegated",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BetType",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Player"
+          },
+          {
+            "name": "House"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CardIndexValue",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "value",
+            "type": "u8"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "card_type",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DrawnCards",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "card",
+            "type": "u8"
+          },
+          {
+            "name": "drawn_at",
+            "type": {
+              "defined": {
+                "name": "PokaStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameMode",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Normal"
+          },
+          {
+            "name": "Roulette"
+          },
+          {
+            "name": "Poka"
+          },
+          {
+            "name": "Poker"
+          },
+          {
+            "name": "Omaha"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameRound",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "game",
+            "type": "u16"
+          },
+          {
+            "name": "round",
+            "type": "u64"
+          },
+          {
+            "name": "game_mode",
+            "type": {
+              "defined": {
+                "name": "GameMode"
+              }
+            }
+          },
+          {
+            "name": "total_count",
+            "type": "u16"
+          },
+          {
+            "name": "total_amount",
+            "type": "u64"
+          },
+          {
+            "name": "participants",
+            "type": "u16"
+          },
+          {
+            "name": "bet_revealed_count",
+            "type": "u16"
+          },
+          {
+            "name": "bet_closed_count",
+            "type": "u16"
+          },
+          {
+            "name": "random_number",
+            "type": "u128"
+          },
+          {
+            "name": "random_number_revealed",
+            "type": "u128"
+          },
+          {
+            "name": "hashed_server_seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "public_seed_block_height",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "GameRoundStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameRoundStatus",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "New"
+          },
+          {
+            "name": "Committed"
+          },
+          {
+            "name": "Revealed"
+          },
+          {
+            "name": "Closed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Match",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "game",
+            "type": "u16"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "min_bet_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_bet_count",
+            "type": "u8"
+          },
+          {
+            "name": "max_bet_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_participants",
+            "type": "u16"
+          },
+          {
+            "name": "allow_bet_after_commit",
+            "type": "bool"
+          },
+          {
+            "name": "max_fold_allowed",
+            "type": "u8"
+          },
+          {
+            "name": "sit_in_amount",
+            "type": "u64"
+          },
+          {
+            "name": "tax_percentage",
+            "type": "u16"
+          },
+          {
+            "name": "bonus_tax_percentage",
+            "type": "u16"
+          },
+          {
+            "name": "round_count",
+            "type": "u64"
+          },
+          {
+            "name": "round_closed_count",
+            "type": "u64"
+          },
+          {
+            "name": "max_round",
+            "type": "u64"
+          },
+          {
+            "name": "poka_profile_count",
+            "type": "u8"
+          },
+          {
+            "name": "poka_profile_closed",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MatchStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchStatus",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "New"
+          },
+          {
+            "name": "Revealed"
+          },
+          {
+            "name": "Closed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Poka",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "folded_count",
+            "type": "u8"
+          },
+          {
+            "name": "poka_status",
+            "type": {
+              "defined": {
+                "name": "PokaStatus"
+              }
+            }
+          },
+          {
+            "name": "merkle_root",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "highest_call",
+            "type": "u64"
+          },
+          {
+            "name": "used_card_indices",
+            "type": "bytes"
+          },
+          {
+            "name": "community_cards",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PokaBet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "game",
+            "type": "u16"
+          },
+          {
+            "name": "round",
+            "type": "u64"
+          },
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "poker_action",
+            "type": {
+              "defined": {
+                "name": "PokerAction"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "PokaStatus"
+              }
+            }
+          },
+          {
+            "name": "card_index",
+            "type": "bytes"
+          },
+          {
+            "name": "record_index",
+            "type": "u8"
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          },
+          {
+            "name": "is_delegated",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PokaProfile",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "round_joined",
+            "type": "u8"
+          },
+          {
+            "name": "current_round",
+            "type": "u64"
+          },
+          {
+            "name": "fold_count",
+            "type": "u8"
+          },
+          {
+            "name": "is_delegated",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PokaStatus",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "SitIn"
+          },
+          {
+            "name": "PreFlop"
+          },
+          {
+            "name": "Flop"
+          },
+          {
+            "name": "Turns"
+          },
+          {
+            "name": "River"
+          },
+          {
+            "name": "Showdown"
+          },
+          {
+            "name": "Fold"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PokerAction",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Check"
+          },
+          {
+            "name": "Fold"
+          },
+          {
+            "name": "AutoFold"
+          },
+          {
+            "name": "PreFlop"
+          },
+          {
+            "name": "Call"
+          },
+          {
+            "name": "Raise"
+          },
+          {
+            "name": "AllIn"
+          },
+          {
+            "name": "BigBlind"
+          },
+          {
+            "name": "SmallBlind"
+          },
+          {
+            "name": "NormalCard"
+          },
+          {
+            "name": "MysteryCard"
+          },
+          {
+            "name": "SitIn"
+          },
+          {
+            "name": "CommunityCard"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Roulette",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "round",
+            "type": "u64"
+          },
+          {
+            "name": "blue",
+            "type": "u64"
+          },
+          {
+            "name": "yellow",
+            "type": "u64"
+          },
+          {
+            "name": "pattern",
+            "type": "u64"
+          },
+          {
+            "name": "jackpot",
+            "type": "u64"
+          },
+          {
+            "name": "player_bet_amount",
+            "type": "u64"
+          },
+          {
+            "name": "player_bet_count",
+            "type": "u16"
+          },
+          {
+            "name": "house_bet_amount",
+            "type": "u64"
+          },
+          {
+            "name": "house_bet_count",
+            "type": "u16"
+          },
+          {
+            "name": "house_bet_refund_count",
+            "type": "u16"
+          },
+          {
+            "name": "house_bet_refund_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Winner",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "u64"
+          },
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "card_pair",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "CardIndexValue"
+                }
+              }
+            }
+          },
+          {
+            "name": "bet_pda",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "winning_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "constants": []
+}
