@@ -83,6 +83,16 @@ const Layout = ({
         return data.records.filter(x => x.created_tx !== data.created_tx);
     }, [data]);
 
+    const [createRangeStart, createRangeEnd] = useMemo(() => {
+        if(!data?.records || data.records.length === 0) return [undefined, undefined];
+        const createTxRecord = data.records.filter(x => x.created_tx === data.created_tx);
+        if(!createTxRecord[0]) {
+            return [undefined, undefined];
+        }
+
+        return [Number(createTxRecord[0].bet_range_start), Number(createTxRecord[0].bet_range_end)];
+    }, [data]);
+
     const otherWinTxs = useMemo(() => {
         if(!data?.records || data.records.length === 0 || !data.otherWinnerTxs || data.otherWinnerTxs.length === 0) return [];
         return data.otherWinnerTxs.filter(x => !data.result_txs.includes(x));
@@ -434,8 +444,8 @@ const Layout = ({
                                             tx={x.created_tx}
                                             connection={connection}
                                             // hashedServerSeed={hashedServerSeed}
-                                            rangeStart={Number(x.bet_range_start)}
-                                            rangeEnd={Number(x.bet_range_end)}
+                                            rangeStart={createRangeStart}
+                                            rangeEnd={createRangeEnd}
                                         />
                                     ))
                                 }
