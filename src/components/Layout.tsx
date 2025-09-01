@@ -430,8 +430,8 @@ const Layout = ({
                                     tx={data.created_tx}
                                     connection={connection}
                                     hashedServerSeed={hashedServerSeed}
-                                    rangeStart={Number(data.records[0].bet_range_start)}
-                                    rangeEnd={Number(data.records[0].bet_range_end)}
+                                    rangeStart={Number(createRangeStart)}
+                                    rangeEnd={Number(createRangeEnd)}
                                 />
 
                                 {
@@ -444,8 +444,8 @@ const Layout = ({
                                             tx={x.created_tx}
                                             connection={connection}
                                             // hashedServerSeed={hashedServerSeed}
-                                            rangeStart={createRangeStart}
-                                            rangeEnd={createRangeEnd}
+                                            rangeStart={Number(x.bet_range_start)}
+                                            rangeEnd={Number(x.bet_range_end)}
                                         />
                                     ))
                                 }
