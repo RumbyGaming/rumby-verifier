@@ -274,7 +274,7 @@ const Layout = ({
                             <input 
                                 type="text" 
                                 className={`text-white text-[15px] pl-[25px] pr-[15px] py-[10px] rounded-[4px] text-left border border-[#5E53FF6B] w-full disabled:bg-white/20`}
-                                onChange={({target: { value }}) => { setRpcEndpoint(value) }} 
+                                onChange={({target: { value }}) => { setRpcEndpoint(value.trim()) }} 
                                 value={rpcEndpoint}
                                 placeholder='https://your.rpc'
                             />
